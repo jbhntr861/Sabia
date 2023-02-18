@@ -1,35 +1,41 @@
 import openai
 import os
 import yaml
+import sys
 
+#Check if config.yml exists
 if os.path.exists('config.yml'):
-	with open('config.yml', 'r') as f:
-		config = yaml.safe_load(f)
+    with open('config.yml', 'r') as f:
+        config = yaml.safe_load(f)
 
 apiKey = config['apiKey']
-
-openai.api_key=apiKey
-import os
-import openai
-
+openai.api_key = apiKey
 user_input=""
 
+#Check if API key exists
+if apiKey == 'YOURAPIKEYGOESHERE':
+    print("""\tMissing API key!\n\tYou have been slain by A Diseased Inn Damsel! You are dead.\r
+	     Uh oh, looks like someone didn't read the instructions.\r
+	     Please see the README for information on retrieving your API key.""")
+    sys.exit(1)
+
+#Start loop
 while user_input!='bye':
 
-	user_input = input("Sabia: I am Sabia, the all knowing terminal Oracle. Type 'bye' to continue upon your journey.\n\rAsk, and thou shalt receive: ")
-	response = openai.Completion.create(
-	model="text-davinci-003",
-	prompt=user_input,
-	temperature=1,
-	max_tokens=100,
-	top_p=1,
-	frequency_penalty=0.0,
-	presence_penalty=0.0,
-	)
+    user_input = input("""\nSabia: I am Sabia, the all knowing terminal Oracle.
+                                     \rType 'bye' at any time to leave and continue upon your journey.
+                                     \n\r Ask, and ye shall receive: """)
 
-	if response['choices'][0]['text'] == "Unknown":
-		print("Sabia: Ye tiresome create, I'm not sure how to answer thy question. Could you rephrase it perhaps?\n")
-	else:
-		print("Sabia: " + response['choices'][0]['text'] + "\n That was too easy! Asketh thou again: ")
-	if user_input=="bye":
-		print("Fare thee well, and beware thee damsels who linger long about the hallways of the inn!")
+    #Check if user input is blank
+    if not user_input:
+        print("\nSabia: A foolyshe demand behoueth a foolyshe answere!\r I do not understand thy question. Asketh thou once more: ")
+    else:
+        response = openai.Completion.create(
+            model="text-davinci-003",
+            prompt=user_input,
+            temperature=0.9,
+            top_p=1
+        )
+        print(f"Sabia: {response['choices'][0]['text']}")
+
+print("Sabia: Fare thee well, and beware the Damsels about the inn!")
