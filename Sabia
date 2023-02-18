@@ -1,0 +1,35 @@
+import openai
+import os
+import yaml
+
+if os.path.exists('config.yml'):
+	with open('config.yml', 'r') as f:
+		config = yaml.safe_load(f)
+
+apiKey = config['apiKey']
+
+openai.api_key=apiKey
+import os
+import openai
+
+user_input=""
+
+while user_input!='bye':
+
+	user_input = input("Sabia: I am Sabia, the all knowing terminal Oracle. Type 'bye' to continue upon your journey.\n\rAsk, and thou shalt receive: ")
+	response = openai.Completion.create(
+	model="text-davinci-003",
+	prompt=user_input,
+	temperature=1,
+	max_tokens=100,
+	top_p=1,
+	frequency_penalty=0.0,
+	presence_penalty=0.0,
+	)
+
+	if response['choices'][0]['text'] == "Unknown":
+		print("Sabia: Ye tiresome create, I'm not sure how to answer thy question. Could you rephrase it perhaps?\n")
+	else:
+		print("Sabia: " + response['choices'][0]['text'] + "\n That was too easy! Asketh thou again: ")
+	if user_input=="bye":
+		print("Fare thee well, and beware thee damsels who linger long about the hallways of the inn!")
