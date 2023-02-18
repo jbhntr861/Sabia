@@ -2,6 +2,7 @@
 #########################
 
 Sabia is a CLI for the Davinci-003 model from OpenAI.
+
 The bot will tell stories, write code, answer questions,
 give you recipes, tell you how to build a jet engine, etc.
 
