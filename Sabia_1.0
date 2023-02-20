@@ -19,8 +19,8 @@ openai.api_key = apiKey
 
 if apiKey == 'YOURAPIKEYGOESHERE':
     print("""\tMissing API key!\n\tThou hath been slain by A Diseased Inn Damsel! Thou art dead[LOADING...].\r
-             Uh oh, looks like someone didn't read the instructions.\r
-             Please see the README for information on retrieving your API key.""")
+             Uh oh, T'would seem that someone nae hath read the instructions!\r
+             Pray read ye the README for information on retrieving thy API key.""")
     sys.exit(1)
 
 
@@ -84,7 +84,7 @@ model.add(tf.keras.layers.Dense(1))
 model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
 
 if config['mode'] == 'voice':
-    engine.say("I am Sabia, the all knowing terminal Oracle. Type 'bye' at any time to leave and continue upon your journey. Ask, and ye shalt receive:")
+    engine.say("I am Sabia, the all knowing terminal Oracle! \rYou may say 'bye' at any time to leave and continue upon your journies.\rFain would I hear thy words, O noble one. Pray, mote thy requests, and I shall answer them in ancient tongue.")
     engine.runAndWait()
     while user_input != 'bye':
         r = sr.Recognizer()
@@ -149,8 +149,8 @@ else:
                 conn.commit()
 
 if config['mode'] == 'voice':
-    engine.say("Fare thee well, and beware the Damsels about the inn!")
+    engine.say("That was so much fun I've lost my chauces! Fare thee well, traveler, and beware the Damsels about the inn.")
     engine.runAndWait()
 else:
-    print("Sabia: Fare thee well, and beware the Damsels about the inn!")
+    print("Sabia:That was so much fun I've lost my chauces! Fare thee well, traveler, and beware the Damsels about the inn.")
 conn.close()
