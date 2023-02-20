@@ -20,6 +20,9 @@ c. Click API keys (retrieve or get API keys)
 d. Open the config.yml file in the Sabia directory
 e. Place your api key on the right of Apikey: 
 
+MAKE SURE THERE IS A SPACE BETWEEN apiKey: AND YOUR API KEY OTHERWISE IT WILL NOT BE RECOGNIZED AND WILL NOT WORK!
+apiKey: <apikeyhere>
+
 STEP 2. # Installation
 
 #################
