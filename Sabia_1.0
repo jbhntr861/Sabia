@@ -18,7 +18,7 @@ openai.api_key = apiKey
 #Check if API key exists
 
 if apiKey == 'YOURAPIKEYGOESHERE':
-    print("""\tMissing API key!\n\tYou have been slain by A Diseased Inn Damsel! You are dead.\r
+    print("""\tMissing API key!\n\tThou hath been slain by A Diseased Inn Damsel! Thou art dead[LOADING...].\r
              Uh oh, looks like someone didn't read the instructions.\r
              Please see the README for information on retrieving your API key.""")
     sys.exit(1)
