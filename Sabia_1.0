@@ -1,76 +1,5 @@
-import sqlite3
-import openai
-import os
-import yaml
-import sys
-
-
-
-#Check if config.yml exists
-if os.path.exists('config.yml'):
-    with open('config.yml', 'r') as f:
-        config = yaml.safe_load(f)
-
-apiKey = config['apiKey']
-openai.api_key = apiKey
-
-#Check if API key exists
-if apiKey == 'YOURAPIKEYGOESHERE':
-    print("""\tMissing API key!\n\tYou have been slain by A Diseased Inn Damsel! You are dead.\r
-             Uh oh, looks like someone didn't read the instructions.\r
-             Please see the README for information on retrieving your API key.""")
-    sys.exit(1)
-
-# Setup SQLite DB
-conn = sqlite3.connect('oracle.db')
-cursor = conn.cursor()
-cursor.execute("CREATE TABLE IF NOT EXISTS conversations (id INTEGER PRIMARY KEY AUTOINCREMENT, user_input TEXT, bot_response TEXT)")
-
-#Start loop
-user_input=""
-
-# Get configuration from user
-config = {}
-config['mode'] = input('Choose between text only or text + voice (text/voice): ')
-config['tokens'] = input('Enter number of tokens for response (default is 256): ') or 256
-config['prompt'] = input('Enter prompt for response (default is empty): ') or ''
-config['temperature'] = input('Enter temperature for response (default is 0.9): ') or 0.9
-config['top_p'] = input('Enter top_p for response (default is 1): ') or 1
-config['model'] = input('Enter model for response (default is "text-davinci-003"): ') or 'text-davinci-003'
-
-while user_input!='bye':
-    user_input = input("""\nSabia: I am Sabia, the all knowing terminal Oracle.
-                                     \rType 'bye' at any time to leave and continue upon your journey.
-                                     \n\r Ask, and ye shalt receive: """)
-    
-    if user_input == 'view database':
-        cursor.execute('SELECT * FROM conversations')
-        rows = cursor.fetchall()
-        for row in rows:
-            print(f'User input: {row[1]}')
-            print(f'Bot response: {row[2]}\n')
-        continue
-
-    #Check if user input is blank
-    if not user_input:
-        print("\nSabia: A foolyshe demand behoueth a foolyshe answere!\r I do not understand thy question. Asketh thou once more: ")
-    else:
-        response = openai.Completion.create(
-            model=config['model'],
-            tokens=config['tokens'],
-            prompt=user_input,
-            temperature=config['temperature'],
-            top_p=config['top_p']
-        )
-        print(f"Sabia: {response['choices'][0]['text']}")
-        # Store conversation in SQLite
-        cursor.execute("INSERT INTO conversations (user_input, bot_response) VALUES (?, ?)", (user_input, response['choices'][0]['text']))
-        conn.commit()
-
-print("Sabia: Fare thee well, and beware the Damsels about the inn!")
-conn.close()
-
-
+import speech_recognition as sr
+import pyttsx3
 import sqlite3
 import openai
 import os
@@ -113,7 +42,10 @@ def selfImprovement(fileName):
     return
 
 #call the function with Sabia's sourcecode.
-print("Sabia: *\nAhhhhh, I feel much better now. View the new and improved me in Sabia.improvements. \nRename this file to Sabia and overwrite to use the improvements. \nUse my backup if the code does not work.*")
+
+engine = pyttsx3.init()
+engine.say("Ahhhhh, I feel much better now. View the new and improved me in Sabia.improvements. Rename this file to Sabia and overwrite to use the improvements. Use my backup if the code does not work.")
+engine.runAndWait()
 selfImprovement(Sabia)
 
 
@@ -151,41 +83,74 @@ model.add(tf.keras.layers.Dense(64, activation='relu'))
 model.add(tf.keras.layers.Dense(1))
 model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
 
-while user_input!='bye':
-    user_input = input("""\nSabia: I am Sabia, the all knowing terminal Oracle.
-                                     \rType 'bye' at any time to leave and continue upon your journey.
-                                     \n\r Ask, and ye shalt receive: """)
-    
-    if user_input == 'view database':
-        cursor.execute('SELECT * FROM conversations')
-        rows = cursor.fetchall()
-        for row in rows:
-            print(f'User input: {row[1]}')
-            print(f'Bot response: {row[2]}\n')
-        continue
+if config['mode'] == 'voice':
+    engine.say("I am Sabia, the all knowing terminal Oracle. Type 'bye' at any time to leave and continue upon your journey. Ask, and ye shalt receive:")
+    engine.runAndWait()
+    while user_input != 'bye':
+        r = sr.Recognizer()
+        with sr.Microphone() as source:
+            audio = r.listen(source)
+        try:
+            user_input = r.recognize_google(audio)
+            #Check if user input is blank
+            if not user_input:
+                engine.say("A foolyshe demand behoueth a foolyshe answere! I do not understand thy question. Asketh thou once more: ")
+                engine.runAndWait()
+            else:
+                # Use Deep Learning Model
+                if config['remember_conversations'] == 'yes':
+                    predicted_response = model.predict([user_input])
+                    predicted_response = predicted_response.flatten()
+                    predicted_response = conversation_history[predicted_response]
+                    engine.say(f"{predicted_response}")
+                    engine.runAndWait()
+                else:
+                    response = openai.Completion.create(
+                        model=config['model'],
+                        tokens=config['tokens'],
+                        prompt=user_input,
+                        temperature=config['temperature'],
+                        top_p=config['top_p']
+                    )
+                    engine.say(f"{response['choices'][0]['text']}")
+                    engine.runAndWait()
+                    # Store conversation in SQLite
+                    cursor.execute("INSERT INTO conversations (user_input, bot_response) VALUES (?, ?)", (user_input, response['choices'][0]['text']))
+                    conn.commit()
+        except:
+            print("Sorry, I didn't catch that.")
 
-    #Check if user input is blank
-    if not user_input:
-        print("\nSabia: A foolyshe demand behoueth a foolyshe answere!\r I do not understand thy question. Asketh thou once more: ")
-    else:
-        # Use Deep Learning Model
-        if config['remember_conversations'] == 'yes':
-            predicted_response = model.predict([user_input])
-            predicted_response = predicted_response.flatten()
-            predicted_response = conversation_history[predicted_response]
-            print(f"Sabia: {predicted_response}")
+else:
+    print("Sabia: I am Sabia, the all knowing terminal Oracle. Type 'bye' at any time to leave and continue upon your journey. Ask, and ye shalt receive: ")
+    while user_input!='bye':
+        user_input = input()
+        
+        #Check if user input is blank
+        if not user_input:
+            print("\nSabia: A foolyshe demand behoueth a foolyshe answere!\r I do not understand thy question. Asketh thou once more: ")
         else:
-            response = openai.Completion.create(
-                model=config['model'],
-                tokens=config['tokens'],
-                prompt=user_input,
-                temperature=config['temperature'],
-                top_p=config['top_p']
-            )
-            print(f"Sabia: {response['choices'][0]['text']}")
-            # Store conversation in SQLite
-            cursor.execute("INSERT INTO conversations (user_input, bot_response) VALUES (?, ?)", (user_input, response['choices'][0]['text']))
-            conn.commit()
+            # Use Deep Learning Model
+            if config['remember_conversations'] == 'yes':
+                predicted_response = model.predict([user_input])
+                predicted_response = predicted_response.flatten()
+                predicted_response = conversation_history[predicted_response]
+                print(f"Sabia: {predicted_response}")
+            else:
+                response = openai.Completion.create(
+                    model=config['model'],
+                    tokens=config['tokens'],
+                    prompt=user_input,
+                    temperature=config['temperature'],
+                    top_p=config['top_p']
+                )
+                print(f"Sabia: {response['choices'][0]['text']}")
+                # Store conversation in SQLite
+                cursor.execute("INSERT INTO conversations (user_input, bot_response) VALUES (?, ?)", (user_input, response['choices'][0]['text']))
+                conn.commit()
 
-print("Sabia: That was so much fun I can't find my chauses! Fare thee well, and beware ye the Damsels about the inn!")
+if config['mode'] == 'voice':
+    engine.say("Fare thee well, and beware the Damsels about the inn!")
+    engine.runAndWait()
+else:
+    print("Sabia: Fare thee well, and beware the Damsels about the inn!")
 conn.close()
