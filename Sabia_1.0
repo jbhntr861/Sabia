@@ -187,5 +187,5 @@ while user_input!='bye':
             cursor.execute("INSERT INTO conversations (user_input, bot_response) VALUES (?, ?)", (user_input, response['choices'][0]['text']))
             conn.commit()
 
-print("Sabia: Fare thee well, and beware the Damsels about the inn!")
+print("Sabia: That was so much fun I can't find my chauses! Fare thee well, and beware ye the Damsels about the inn!")
 conn.close()
