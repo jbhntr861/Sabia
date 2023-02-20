@@ -29,11 +29,11 @@ STEP 2. # Installation
 #### LINUX ######
 #################
 
-a. git clone https://github.com/jbhntr861/Sabia
-b. cd Sabia
-c. sudo apt install python3
-d. pip install -r requirements.txt
-e. python3 Sabia
+git clone https://github.com/jbhntr861/Sabia
+cd Sabia
+sudo apt install python3
+pip install -r requirements.txt
+python3 Sabia
 
 #################
 #### WINDOWS ####
@@ -41,11 +41,11 @@ e. python3 Sabia
 
 a. Windows key + X
 b. Open Powershell terminal (admin)
-c. Install-Package Python3
-d. Install-Package git
-e. git clone https://github.com/jbhntr861/Sabia
-f. cd Sabia
-g. pip install -r requirements.txt
-h. Python3 Sabia
+   Install-Package Python3
+   Install-Package git
+   git clone https://github.com/jbhntr861/Sabia
+   cd Sabia
+   pip install -r requirements.txt
+   Python3 Sabia
 
 Enjoy.
