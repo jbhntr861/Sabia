@@ -19,7 +19,7 @@ openai.api_key = apiKey
 
 if apiKey == 'YOURAPIKEYGOESHERE':
     print("""\tMissing API key!\n\tThou hath been slain by A Diseased Inn Damsel! Thou art dead[LOADING...].\r
-             Uh oh, T'would seem that someone nae hath read the instructions!\r
+             Uh oh, T'would seem that someone hath nae read the instructions!\r
              Pray read ye the README for information on retrieving thy API key.""")
     sys.exit(1)
 
@@ -38,15 +38,18 @@ def selfImprovement(fileName):
     with open('Sabia.improvement', 'w') as f:
         for improvement in code_improvements:
             f.write(improvement + '\n')
+
+    engine = pyttsx3.init()
+    engine.say("Ahhhhh, I feel much better now. View the new and improved me in Sabia.improvements. Rename this file to Sabia and overwrite to use the improvements. Use my backup if the code does not work.")
+    engine.runAndWait()
+
     
     return
 
+selfImprovement()
 #call the function with Sabia's sourcecode.
 
-engine = pyttsx3.init()
-engine.say("Ahhhhh, I feel much better now. View the new and improved me in Sabia.improvements. Rename this file to Sabia and overwrite to use the improvements. Use my backup if the code does not work.")
-engine.runAndWait()
-selfImprovement(Sabia)
+
 
 
 # Setup SQLite DB
@@ -56,6 +59,7 @@ cursor.execute("CREATE TABLE IF NOT EXISTS conversations (id INTEGER PRIMARY KEY
 
 #Start loop
 user_input=""
+engine = pyttsx3.init()
 
 # Get configuration from user
 config = {}
@@ -84,8 +88,16 @@ model.add(tf.keras.layers.Dense(1))
 model.compile(optimizer='adam', loss='mean_squared_error', metrics=['accuracy'])
 
 if config['mode'] == 'voice':
-    engine.say("I am Sabia, the all knowing terminal Oracle! \rYou may say 'bye' at any time to leave and continue upon your journies.\rFain would I hear thy words, O noble one. Pray, mote thy requests, and I shall answer them in ancient tongue.")
+
+    engine.say("""I am Sabia, the all knowing terminal Oracle! \r
+                  You may say 'bye' at any time to leave and continue upon your journies.\r
+                  Fain would I hear thy words, O noble one. \r
+                  Pray, mote thy requests, and I shall answer them in ancient tongue.""")
+            
+    
+    
     engine.runAndWait()
+    
     while user_input != 'bye':
         r = sr.Recognizer()
         with sr.Microphone() as source:
