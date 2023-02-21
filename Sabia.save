@@ -1,24 +1,9 @@
-import os
-import sys
 import pyttsx3
 import speech_recognition as sr
 import sqlite3
 import openai
 import yaml
 import pyaudio
-
-def make_request (config): 
-  api_key = config['davinci_model_003']['api_key']
-  
-  # import openai
-  openai = __import__('openai')
-  # create an openai api client
-  api = openai.API(api_key)
-  # make a request to davinci model using the api
-  response = api.engine.get_response(user_input, engine="davinci", retrieve_previous_responses=True)
-  
-  return response
-
 #Check if config.yml exists
 if os.path.exists('config.yml'):
     with open('config.yml', 'r') as f:
@@ -34,6 +19,7 @@ if apiKey == 'YOURAPIKEYGOESHERE':
              Uh oh, T'would seem that someone nae hath read the instructions!\r
              Pray read ye the README for information on retrieving thy API key.""")
     sys.exit(1)
+
 
 
 def listen():
@@ -69,38 +55,6 @@ def voice_run():
         print("\nThoust shalt not enter that which is not offered. Please select the option of Windows or Linux.\n")
         voice_run()
 
-def text_run():
-    user_input = ""
-    first_time=True
-    while user_input!='bye':
-        if first_time==True:
-            user_input = input("""\nSabia: I am Sabia, the all-wise Terminal Oracle.
-                            \rThou mayst sayest 'bye' to depart at any time to continue upon thine journeys.\r
-                            I may tell stories, give instructions, write computer programs, or just converse.
-                            \nAsk and thou shall receive: """)
-            first_time=False
-        else:
-            user_input=input("You: ")
-
-        #Check if user input is blank
-        if not user_input:
-            print("""\nSabia: A foolyshe demand behoueth a foolyshe answere!
-                    \rI do not understand thy question. Asketh thou once more: """)
-        else:
-            response = openai.Completion.create(
-            model="text-davinci-003",
-            prompt=user_input,
-            temperature=0.9,
-            max_tokens=2256,
-            top_p=1
-            )
-            print(f"Sabia: {response['choices'][0]['text']}")
-
-        if user_input=='bye':
-            print("Sabia: Fare thee well, and beware ye the Damsels parousing about the inn!")
-            sys.exit(0)
-
-
 # define the voice functions - one for Windows and one for Linux
 def voice_windows_run():
     while True:
@@ -109,8 +63,7 @@ def voice_windows_run():
         if "exit" in data:
             break
         response = openai.Completion.create(
-            max_tokens=2256,
-	    model="text-davinci-003",
+            model="text-davinci-003",
             prompt=data,
             temperature=0.9,
             top_p=1
@@ -125,8 +78,7 @@ def voice_linux_run():
         if "exit" in data:
             break
         response = openai.Completion.create(
-	    max_tokens=2256,
-	    model="text-davinci-003",
+            model="text-davinci-003",
             prompt=data,
             temperature=0.9,
             top_p=1
@@ -139,18 +91,12 @@ def voice_linux_run():
 # define the text function
 def text_run():
     user_input = ""
-    first_time=True
     while user_input!='bye':
-        if first_time==True:
-            user_input = input("""\nSabia: I am Sabia, the all-wise Terminal Oracle.
+
+        user_input = input("""\nSabia: I am Sabia, the all-wise Terminal Oracle.
                             \rThou mayst sayest 'bye' to depart at any time to continue upon thine journeys.\r
                             I may tell stories, give instructions, write computer programs, or just converse.
                             \nAsk and thou shall receive: """)
-	    
-         
-
-        else: user_input=input("You: ")
-        first_time=False
 
 #Check if user input is blank
 
@@ -162,8 +108,7 @@ def text_run():
             model="text-davinci-003",
             prompt=user_input,
             temperature=0.9,
-            max_tokens=2256,
-	    top_p=1
+            top_p=1
             )
             print(f"Sabia: {response['choices'][0]['text']}")
 
