@@ -110,7 +110,7 @@ def voice_windows_run():
             break
         response = openai.Completion.create(
             max_tokens=2256,
-	    model="text-davinci-003",
+            model="text-davinci-003",
             prompt=data,
             temperature=0.9,
             top_p=1
@@ -125,8 +125,8 @@ def voice_linux_run():
         if "exit" in data:
             break
         response = openai.Completion.create(
-	    max_tokens=2256,
-	    model="text-davinci-003",
+            max_tokens=2256,
+            model="text-davinci-003",
             prompt=data,
             temperature=0.9,
             top_p=1
@@ -146,7 +146,7 @@ def text_run():
                             \rThou mayst sayest 'bye' to depart at any time to continue upon thine journeys.\r
                             I may tell stories, give instructions, write computer programs, or just converse.
                             \nAsk and thou shall receive: """)
-	    
+            
          
 
         else: user_input=input("You: ")
@@ -163,7 +163,7 @@ def text_run():
             prompt=user_input,
             temperature=0.9,
             max_tokens=2256,
-	    top_p=1
+            top_p=1
             )
             print(f"Sabia: {response['choices'][0]['text']}")
 
