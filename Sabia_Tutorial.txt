@@ -1,0 +1,77 @@
+The first step to installing and running python3 packages which is what 
+Sabia is to install Python.
+Sabia is a terminal application which means it must be run
+in one of those black screens like you get when you run the command 
+prompt in windows.
+
+The first step to installing python is to open up Powershell. 
+This is the command prompt for modern versions of windows.
+Press the windows key then press X. You will see a little menu and 
+it will have a list of options, you are looking for Powershell (ADMIN)
+it should be the last one on the list or near.
+
+Once you have the window up which looks like a blue screen with white letters. 
+We will install Python and Sabia with just a few commands. A command
+is whatever line of text you type in the window and press enter.
+You may copy and paste the commands or enter them yourself. 
+They must be typed verbatim. You cannot have typos or deviate at all.
+
+####BEGIN SCRIPT########
+
+Install-Package Python3
+
+if after typing the above command you are asked any questions type a Y and press enter
+continuing.
+
+Install-Package git
+
+now reboot your computer. 
+
+
+Now you should be able to repeat the above steps to enter your powershell window. 
+Type in the world git and see if the package installed correctly.
+If it did not you will need to see this link.
+
+https://git-scm.com/download/win
+
+this will install git on your windows machine. Reboot and start the process again.
+
+Win+X Powershell (admin)
+
+now type in the commands as follows
+
+git clone https//:github.com/jbhntr861/Sabia
+
+cd Sabia
+pip install -r requirements.txt
+python3 Sabia
+
+Sabia should start, if you get error messages at this point, don't be discouraged.
+You should contact jbhntr861@gmail.com and copy and paste the error messages.
+I will see what is going on and contact you with a solution to your problem.
+
+Any errors that say "Module not found" means that you do not have the current module installed.
+Say for instance we have "OpenAI module not found"
+we will simply type
+
+pip install openai
+
+and we have solved this problem.
+Any other errors you see will most likely be a result of Sabia not being able to use
+the audio on your machine. It must have permission to use the microphone.
+
+
+you should try this link
+ms-settings:privacy-microphone?activationSource=SMC-IA-4558611
+
+you should also open up your microsoft store and make sure that 
+Windows allows python application access to your microphone.
+Windows has a very difficult permissions system. Everything
+in a computer system can be considered a file. Even the microphone.
+There is a file on your computer somewhere that the program is trying to access
+and it is not being given permission to read this file by Windows.
+
+If you are still having problems after reading this tutorial then
+email jbhntr861@gmail.com
+
+Thank you for using Sabia. 
