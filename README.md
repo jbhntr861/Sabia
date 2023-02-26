@@ -1,6 +1,8 @@
 Sabia
 
-Sabia is an open-source voice assistant that can recognize voice commands and generate responses. It can handle tasks such as setting reminders, checking the weather, and more. Sabia uses advanced machine learning algorithms to improve its accuracy and efficiency.
+Sabia is an open-source voice assistant that uses the ChatGPT API. It can handle tasks such as setting reminders, checking the weather, and more. Sabia uses advanced machine learning algorithms to improve its accuracy and efficiency.
+
+
 Installation
 
     Clone the Sabia repository from GitHub:
